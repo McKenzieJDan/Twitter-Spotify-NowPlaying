@@ -7,6 +7,7 @@ import time
 import tweepy
 import spotipy
 import spotipy.util as util
+import json
 from keys import *
 
 # Twitter https://apps.twitter.com/
@@ -48,6 +49,11 @@ def main():
                     api.update_status(status_text)
                     print status_text
                     last_id = track_id
+
+                    data = results
+                    with open('data.json', 'w') as outfile:
+                        json.dump(data, outfile)
+
                     time.sleep(poll_interval)
                 else:
                     time.sleep(poll_interval)

@@ -1,0 +1,211 @@
+{
+  "context": null,
+  "is_playing": true,
+  "item": {
+    "album": {
+      "album_type": "single",
+      "artists": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/01pKrlgPJhm5dB4lneYAqS"
+          },
+          "href": "https://api.spotify.com/v1/artists/01pKrlgPJhm5dB4lneYAqS",
+          "id": "01pKrlgPJhm5dB4lneYAqS",
+          "name": "Sigma",
+          "type": "artist",
+          "uri": "spotify:artist:01pKrlgPJhm5dB4lneYAqS"
+        }
+      ],
+      "available_markets": [
+        "AD",
+        "AR",
+        "AT",
+        "AU",
+        "BE",
+        "BG",
+        "BO",
+        "BR",
+        "CA",
+        "CH",
+        "CL",
+        "CO",
+        "CR",
+        "CY",
+        "CZ",
+        "DE",
+        "DK",
+        "DO",
+        "EC",
+        "EE",
+        "ES",
+        "FI",
+        "FR",
+        "GB",
+        "GR",
+        "GT",
+        "HK",
+        "HN",
+        "HU",
+        "ID",
+        "IE",
+        "IS",
+        "IT",
+        "JP",
+        "LI",
+        "LT",
+        "LU",
+        "LV",
+        "MC",
+        "MT",
+        "MX",
+        "MY",
+        "NI",
+        "NL",
+        "NO",
+        "NZ",
+        "PA",
+        "PE",
+        "PH",
+        "PL",
+        "PT",
+        "PY",
+        "SE",
+        "SG",
+        "SK",
+        "SV",
+        "TR",
+        "TW",
+        "US",
+        "UY"
+      ],
+      "external_urls": {
+        "spotify": "https://open.spotify.com/album/39Fu2q3D1SoyEmpxJ7M9Jg"
+      },
+      "href": "https://api.spotify.com/v1/albums/39Fu2q3D1SoyEmpxJ7M9Jg",
+      "id": "39Fu2q3D1SoyEmpxJ7M9Jg",
+      "images": [
+        {
+          "height": 640,
+          "url": "https://i.scdn.co/image/aee9fc62fd6728931aaeeedd134fe27f7b89751d",
+          "width": 640
+        },
+        {
+          "height": 300,
+          "url": "https://i.scdn.co/image/36cf2aaf4c946adb891bef99db474c910c31ab59",
+          "width": 300
+        },
+        {
+          "height": 64,
+          "url": "https://i.scdn.co/image/35a6760964164a28d3044dda3a1da036e5b1df9f",
+          "width": 64
+        }
+      ],
+      "name": "Find Me",
+      "type": "album",
+      "uri": "spotify:album:39Fu2q3D1SoyEmpxJ7M9Jg"
+    },
+    "artists": [
+      {
+        "external_urls": {
+          "spotify": "https://open.spotify.com/artist/01pKrlgPJhm5dB4lneYAqS"
+        },
+        "href": "https://api.spotify.com/v1/artists/01pKrlgPJhm5dB4lneYAqS",
+        "id": "01pKrlgPJhm5dB4lneYAqS",
+        "name": "Sigma",
+        "type": "artist",
+        "uri": "spotify:artist:01pKrlgPJhm5dB4lneYAqS"
+      },
+      {
+        "external_urls": {
+          "spotify": "https://open.spotify.com/artist/2WX2uTcsvV5OnS0inACecP"
+        },
+        "href": "https://api.spotify.com/v1/artists/2WX2uTcsvV5OnS0inACecP",
+        "id": "2WX2uTcsvV5OnS0inACecP",
+        "name": "Birdy",
+        "type": "artist",
+        "uri": "spotify:artist:2WX2uTcsvV5OnS0inACecP"
+      }
+    ],
+    "available_markets": [
+      "AD",
+      "AR",
+      "AT",
+      "AU",
+      "BE",
+      "BG",
+      "BO",
+      "BR",
+      "CA",
+      "CH",
+      "CL",
+      "CO",
+      "CR",
+      "CY",
+      "CZ",
+      "DE",
+      "DK",
+      "DO",
+      "EC",
+      "EE",
+      "ES",
+      "FI",
+      "FR",
+      "GB",
+      "GR",
+      "GT",
+      "HK",
+      "HN",
+      "HU",
+      "ID",
+      "IE",
+      "IS",
+      "IT",
+      "JP",
+      "LI",
+      "LT",
+      "LU",
+      "LV",
+      "MC",
+      "MT",
+      "MX",
+      "MY",
+      "NI",
+      "NL",
+      "NO",
+      "NZ",
+      "PA",
+      "PE",
+      "PH",
+      "PL",
+      "PT",
+      "PY",
+      "SE",
+      "SG",
+      "SK",
+      "SV",
+      "TR",
+      "TW",
+      "US",
+      "UY"
+    ],
+    "disc_number": 1,
+    "duration_ms": 204444,
+    "explicit": false,
+    "external_ids": {
+      "isrc": "GBSXS1600141"
+    },
+    "external_urls": {
+      "spotify": "https://open.spotify.com/track/2Wr970IfovsSGnfkE08iMF"
+    },
+    "href": "https://api.spotify.com/v1/tracks/2Wr970IfovsSGnfkE08iMF",
+    "id": "2Wr970IfovsSGnfkE08iMF",
+    "name": "Find Me",
+    "popularity": 62,
+    "preview_url": "https://p.scdn.co/mp3-preview/ed2e2e4c31f6d0da6dda23fe43cfeaf400c56f5d?cid=84cf5d8a0f284a13bf2a5e4b2374b332",
+    "track_number": 1,
+    "type": "track",
+    "uri": "spotify:track:2Wr970IfovsSGnfkE08iMF"
+  },
+  "progress_ms": 2703,
+  "timestamp": 1515188558969
+}
