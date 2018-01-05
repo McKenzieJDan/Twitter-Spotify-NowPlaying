@@ -10,15 +10,15 @@ import spotipy.util as util
 from keys import *
 
 # Keys https://apps.twitter.com/
-CONSUMER_KEY = TWITTER_CONSUMER_KEY
-CONSUMER_SECRET = TWITTER_CONSUMER_SECRET
-ACCESS_KEY = TWITTER_ACCESS_KEY
-ACCESS_SECRET = TWITTER_ACCESS_SECRET
+consumer_key = twitter_consumer_key
+consumer_secret = twitter_consumer_secret
+access_key = twitter_access_key
+access_secret = twitter_access_secret
 
 
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
-api = tweepy.API(auth)
+auth = tweepy.oauthhandler(consumer_key, consumer_secret)
+auth.set_access_token(access_key, access_secret)
+api = tweepy.api(auth)
 
 
 # Spotify https://developer.spotify.com/my-applications/
@@ -47,11 +47,6 @@ def main():
                     cover_art = results['item']['album']['images'][0]['url']
                     track_preview = results['item']['external_urls']['spotify']
                     status_text = "#NowPlaying: " + track_name + " by " + artist_name + " " + track_preview
-                    #urllib.urlretrieve(track_preview, "pics/cover_art.jpg")
-                    #file = glob.glob('pics/cover_art.*')[0]
-                    #api.update_with_media(file)
-                    #print 'cover art: ' +str(cover_art)
-                    #print 'track preview: ' +str(track_preview)
                     api.update_status(status_text)
                     print status_text
                     last_id = track_id
@@ -59,7 +54,6 @@ def main():
                 else:
                     time.sleep(poll_interval)
             else:
-                #print "Nothing Playing..."
                 last_id = 0
                 time.sleep(poll_interval)
         else:
