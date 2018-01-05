@@ -7,12 +7,13 @@ import time
 import tweepy
 import spotipy
 import spotipy.util as util
+from keys import *
 
 # Keys https://apps.twitter.com/
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
-ACCESS_KEY = ''
-ACCESS_SECRET = ''
+CONSUMER_KEY = TWITTER_CONSUMER_KEY
+CONSUMER_SECRET = TWITTER_CONSUMER_SECRET
+ACCESS_KEY = TWITTER_ACCESS_KEY
+ACCESS_SECRET = TWITTER_ACCESS_SECRET
 
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -21,11 +22,11 @@ api = tweepy.API(auth)
 
 
 # Spotify https://developer.spotify.com/my-applications/
-scope = ''
-client_id = ''
-client_secret = ''
-redirect_url = 'http://localhost/'
-username = ''
+scope = 'user-read-currently-playing'
+client_id = spotify_client_id
+client_secret = spotify_client_secret
+redirect_url = spotify_redirect_url
+username = spotify_username
 token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_url)
 
 poll_interval = 20
