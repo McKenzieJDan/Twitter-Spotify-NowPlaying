@@ -48,6 +48,7 @@ def main():
                     api.update_status(status_text)
                     print status_text
                     last_id = track_id
+#
 #                   data = results
 #                    with open('data.json', 'w') as outfile:
 #                        json.dump(data, outfile)
