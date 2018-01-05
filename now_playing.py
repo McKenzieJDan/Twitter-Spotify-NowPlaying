@@ -9,17 +9,15 @@ import spotipy
 import spotipy.util as util
 from keys import *
 
-# Keys https://apps.twitter.com/
+# Twitter https://apps.twitter.com/
 consumer_key = twitter_consumer_key
 consumer_secret = twitter_consumer_secret
 access_key = twitter_access_key
 access_secret = twitter_access_secret
 
-
-auth = tweepy.oauthhandler(consumer_key, consumer_secret)
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_key, access_secret)
-api = tweepy.api(auth)
-
+api = tweepy.API(auth)
 
 # Spotify https://developer.spotify.com/my-applications/
 scope = 'user-read-currently-playing'
