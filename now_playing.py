@@ -15,7 +15,6 @@ consumer_key = twitter_consumer_key
 consumer_secret = twitter_consumer_secret
 access_key = twitter_access_key
 access_secret = twitter_access_secret
-
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
@@ -49,11 +48,10 @@ def main():
                     api.update_status(status_text)
                     print status_text
                     last_id = track_id
-
-                    data = results
-                    with open('data.json', 'w') as outfile:
-                        json.dump(data, outfile)
-
+#
+#                   data = results
+#                    with open('data.json', 'w') as outfile:
+#                        json.dump(data, outfile)
                     time.sleep(poll_interval)
                 else:
                     time.sleep(poll_interval)
