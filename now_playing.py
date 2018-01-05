@@ -20,7 +20,7 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 # Spotify https://developer.spotify.com/my-applications/
-scope = 'user-read-currently-playing'
+scope = 'user-read-currently-playing playlist-modify-public'
 client_id = spotify_client_id
 client_secret = spotify_client_secret
 redirect_url = spotify_redirect_url
