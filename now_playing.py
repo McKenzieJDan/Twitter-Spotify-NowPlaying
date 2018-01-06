@@ -7,8 +7,9 @@ import time
 import tweepy
 import spotipy
 import spotipy.util as util
-import json
+import urllib
 from keys import *
+from PIL import Image
 
 # Twitter https://apps.twitter.com/
 consumer_key = twitter_consumer_key
@@ -20,7 +21,7 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 # Spotify https://developer.spotify.com/my-applications/
-scope = 'user-read-currently-playing playlist-modify-public'
+scope = 'user-read-currently-playing'
 client_id = spotify_client_id
 client_secret = spotify_client_secret
 redirect_url = spotify_redirect_url
@@ -45,7 +46,10 @@ def main():
                     cover_art = results['item']['album']['images'][0]['url']
                     track_preview = results['item']['external_urls']['spotify']
                     tweet_text = "#NowPlaying: " + track_name + " by " + artist_name + " " + track_preview
+                    urllib.urlretrieve(cover_art, "cover_art.jpg")
+                    file = 'cover_art.jpg'
                     api.update_status(tweet_text)
+                    api.update_profile_image(file)
                     print tweet_text
                     last_id = track_id
                     time.sleep(poll_interval)
