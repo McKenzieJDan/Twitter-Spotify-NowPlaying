@@ -44,9 +44,9 @@ def main():
                     artist_name = results['item']['artists'][0]['name']
                     cover_art = results['item']['album']['images'][0]['url']
                     track_preview = results['item']['external_urls']['spotify']
-                    status_text = "#NowPlaying: " + track_name + " by " + artist_name + " " + track_preview
-                    api.update_status(status_text)
-                    print status_text
+                    tweet_text = "#NowPlaying: " + track_name + " by " + artist_name + " " + track_preview
+                    api.update_status(tweet_text)
+                    print tweet_text
                     last_id = track_id
                     time.sleep(poll_interval)
                 else:
