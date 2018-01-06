@@ -46,10 +46,11 @@ def main():
                     cover_art = results['item']['album']['images'][0]['url']
                     track_preview = results['item']['external_urls']['spotify']
                     tweet_text = "#NowPlaying: " + track_name + " by " + artist_name + " " + track_preview
-                    urllib.urlretrieve(cover_art, "cover_art.jpg")
-                    file = 'cover_art.jpg'
+                    urllib.urlretrieve(cover_art, "profile_image.jpg")
+                    profile_image = 'profile_image.jpg'
                     api.update_status(tweet_text)
-                    api.update_profile_image(file)
+                    api.update_profile_image(profile_image)
+                    api.update_profile_banner(profile_image)
                     print tweet_text
                     last_id = track_id
                     time.sleep(poll_interval)
