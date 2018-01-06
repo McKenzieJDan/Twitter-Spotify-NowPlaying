@@ -27,7 +27,7 @@ redirect_url = spotify_redirect_url
 username = spotify_username
 token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_url)
 
-poll_interval = 20
+poll_interval = 1
 
 def main():
     last_id = 0
