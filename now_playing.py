@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+ #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import sys
@@ -10,6 +10,7 @@ import spotipy.util as util
 import urllib
 from keys import *
 from PIL import Image
+import datetime
 
 # Twitter https://apps.twitter.com/
 consumer_key = twitter_consumer_key
@@ -28,7 +29,7 @@ redirect_url = spotify_redirect_url
 username = spotify_username
 token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_url)
 
-poll_interval = 20
+poll_interval = 4
 
 def main():
     last_id = 0
@@ -48,10 +49,19 @@ def main():
                     tweet_text = "#NowPlaying: " + track_name + " by " + artist_name + " " + track_preview
                     urllib.urlretrieve(cover_art, "profile_image.jpg")
                     profile_image = 'profile_image.jpg'
-                    api.update_status(tweet_text)
-                    api.update_profile_image(profile_image)
-                    api.update_profile_banner(profile_image)
-                    print tweet_text
+
+#                    with open('file.txt', 'a') as file:
+#                        now = datetime.datetime.now()
+#                        timestamp = now.strftime("[%Y-%m-%d %H:%M]")
+#                        file.writelines("\n" + timestamp + " " + artist_name + " - " + track_name)
+
+                    try:
+                        api.update_status(tweet_text)
+                        api.update_profile_image(profile_image)
+                        api.update_profile_banner(profile_image)
+                    except tweepy.error.TweepError:
+                        pass
+
                     last_id = track_id
                     time.sleep(poll_interval)
                 else:
