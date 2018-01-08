@@ -11,6 +11,7 @@ import spotipy
 import spotipy.util as util
 from PIL import Image
 from keys import *
+import pprint
 
 # Twitter https://apps.twitter.com/
 consumer_key = twitter_consumer_key
@@ -22,7 +23,7 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 # Spotify https://developer.spotify.com/my-applications/
-scope = 'user-read-currently-playing'
+scope = 'user-read-currently-playing playlist-modify-public'
 client_id = spotify_client_id
 client_secret = spotify_client_secret
 redirect_url = spotify_redirect_url
@@ -42,23 +43,33 @@ def main():
 
             if is_playing == True:
                 if track_id != last_id:
+                    # Twitter Status
                     track_name = results['item']['name']
                     artist_name = results['item']['artists'][0]['name']
-                    cover_art = results['item']['album']['images'][0]['url']
                     track_preview = results['item']['external_urls']['spotify']
                     tweet_text = "#NowPlaying: " + track_name + " by " + artist_name + " " + track_preview
+
+                    # Twitter Profile Images
+                    cover_art = results['item']['album']['images'][0]['url']
                     urllib.urlretrieve(cover_art, "profile_image.jpg")
                     profile_image = 'profile_image.jpg'
+
+                    # Spotify Playlist
+                    playlist_id = spotify_playlist
+                    track_uri = results['item']['uri']
+                    track_uri_latest = [track_uri]
 
 #                    with open('file.txt', 'a') as file:
 #                        now = datetime.datetime.now()
 #                        timestamp = now.strftime("[%Y-%m-%d %H:%M]")
 #                        file.writelines("\n" + timestamp + " " + artist_name + " - " + track_name)
 
+                    # Update Twitter / Spotify
                     try:
                         api.update_status(tweet_text)
                         api.update_profile_image(profile_image)
                         api.update_profile_banner(profile_image)
+                        sp.user_playlist_add_tracks(username, playlist_id, track_uri_latest, position=0)
                     except tweepy.error.TweepError:
                         pass
 
