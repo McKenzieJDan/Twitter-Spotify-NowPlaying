@@ -4,13 +4,13 @@
 import sys
 import os
 import time
+import datetime
 import tweepy
+import urllib
 import spotipy
 import spotipy.util as util
-import urllib
-from keys import *
 from PIL import Image
-import datetime
+from keys import *
 
 # Twitter https://apps.twitter.com/
 consumer_key = twitter_consumer_key
