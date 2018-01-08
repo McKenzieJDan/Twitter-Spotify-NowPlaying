@@ -1,6 +1,5 @@
  #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import sys
 import os
 import time
@@ -11,7 +10,6 @@ import spotipy
 import spotipy.util as util
 from PIL import Image
 from keys import *
-import pprint
 
 # Twitter https://apps.twitter.com/
 consumer_key = twitter_consumer_key
@@ -23,7 +21,7 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 # Spotify https://developer.spotify.com/my-applications/
-scope = 'user-read-currently-playing playlist-modify-public'
+scope = 'user-read-currently-playing playlist-modify-public playlist-modify-private'
 client_id = spotify_client_id
 client_secret = spotify_client_secret
 redirect_url = spotify_redirect_url
@@ -64,15 +62,19 @@ def main():
 #                        timestamp = now.strftime("[%Y-%m-%d %H:%M]")
 #                        file.writelines("\n" + timestamp + " " + artist_name + " - " + track_name)
 
-                    # Update Twitter / Spotify
                     try:
                         api.update_status(tweet_text)
                         api.update_profile_image(profile_image)
                         api.update_profile_banner(profile_image)
-                        sp.user_playlist_add_tracks(username, playlist_id, track_uri_latest, position=0)
+                        #sp.user_playlist_add_tracks(username, playlist_id, track_uri_latest, position=0)
+                        update = True
                     except tweepy.error.TweepError:
+                        update = False
                         pass
-
+                    if update == True:
+                        sp.user_playlist_add_tracks(username, playlist_id, track_uri_latest, position=0)
+                    else:
+                        pass
                     last_id = track_id
                     time.sleep(poll_interval)
                 else:
