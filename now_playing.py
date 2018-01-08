@@ -46,22 +46,18 @@ def main():
                     artist_name = results['item']['artists'][0]['name']
                     track_preview = results['item']['external_urls']['spotify']
                     tweet_text = "#NowPlaying: " + track_name + " by " + artist_name + " " + track_preview
-
                     # Twitter Profile Images
                     cover_art = results['item']['album']['images'][0]['url']
                     urllib.urlretrieve(cover_art, "profile_image.jpg")
                     profile_image = 'profile_image.jpg'
-
                     # Spotify Playlist
                     playlist_id = spotify_playlist
                     track_uri = results['item']['uri']
                     track_uri_latest = [track_uri]
-
 #                    with open('file.txt', 'a') as file:
 #                        now = datetime.datetime.now()
 #                        timestamp = now.strftime("[%Y-%m-%d %H:%M]")
 #                        file.writelines("\n" + timestamp + " " + artist_name + " - " + track_name)
-
                     try:
                         api.update_status(tweet_text)
                         api.update_profile_image(profile_image)
