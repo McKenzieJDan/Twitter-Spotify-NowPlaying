@@ -90,6 +90,29 @@ def main():
                             print 'er:', er.message
                             pass
                     else:
+                        try:
+                            sqlite_file = 'now_playing.db'
+                            conn = sqlite3.connect(sqlite_file)
+                            c = conn.cursor()
+                            album_name = results['item']['album']['name']
+                            name = str(track_name)
+                            c.execute('SELECT 1 FROM nowplaying WHERE track=? LIMIT 1', (name,))
+                            name_exists = c.fetchone() is not None
+                            if name_exists is False:
+                                c.execute("INSERT OR IGNORE INTO nowplaying (track, artist, album, totalPlays, firstListen) VALUES ('{a1}', '{a2}', '{a3}', 1, datetime('now'))".\
+                                          format(a1=track_name, a2=artist_name, a3=album_name))
+                                #print "Added to database"
+                            else:
+                                c.execute("UPDATE nowplaying SET totalPlays = totalPlays + 1 WHERE track = '{a1}'".\
+                                          format(a1=track_name))
+                                c.execute("UPDATE nowplaying SET lastListen = datetime('now') WHERE track = '{a1}'".\
+                                          format(a1=track_name))
+                                #print "Updated play count"
+                            conn.commit()
+                            conn.close()
+                        except sqlite3.Error as er:
+                            print 'er:', er.message
+                            pass
                         pass
                     last_id = track_id
                     time.sleep(poll_interval)
