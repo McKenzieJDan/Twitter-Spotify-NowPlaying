@@ -58,39 +58,30 @@ def main():
                     track_uri = results['item']['uri']
                     track_uri_latest = [track_uri]
                     try:
-                        #api.update_status(tweet_text)
-                        #api.update_profile_image(profile_image)
-                        #api.update_profile_banner(profile_image)
+                        api.update_status(tweet_text)
+                        api.update_profile_image(profile_image)
+                        api.update_profile_banner(profile_image)
                         update = True
-                        print "updated"
                     except tweepy.error.TweepError:
                         update = False
                         pass
                     if update == True:
-                        #sp.user_playlist_add_tracks(username, playlist_id, track_uri_latest, position=0)
+                        sp.user_playlist_add_tracks(username, playlist_id, track_uri_latest, position=0)
                         sqlite_file = 'now_playing.db'
                         conn = sqlite3.connect(sqlite_file)
                         c = conn.cursor()
-                        table_name = 'nowplaying'
-                        track_name = track_name
-                        artist_name = artist_name
                         album_name = results['item']['album']['name']
-                        column_one = 'track'
-                        column_two = 'artist'
-                        column_three = 'album'
-                        column_four = 'totalPlays'
-
                         name = str(track_name)
                         c.execute('SELECT 1 FROM nowplaying WHERE track=? LIMIT 1', (name,))
                         name_exists = c.fetchone() is not None
-
                         if name_exists is False:
                             c.execute("INSERT OR IGNORE INTO nowplaying (track, artist, album, totalPlays) VALUES ('{a1}', '{a2}', '{a3}', 1)".\
                                       format(a1=track_name, a2=artist_name, a3=album_name))
+                            print "Added to database"
                         else:
                             c.execute("UPDATE nowplaying SET totalPlays = totalPlays + 1 WHERE track = '{a1}'".\
                                       format(a1=track_name))
-
+                            print "Updated play count"
                         conn.commit()
                         conn.close()
                     else:
