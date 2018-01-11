@@ -57,9 +57,9 @@ def main():
                     track_uri = results['item']['uri']
                     track_uri_latest = [track_uri]
                     try:
-                        api.update_status(tweet_text)
-                        api.update_profile_image(profile_image)
-                        api.update_profile_banner(profile_image)
+                        #api.update_status(tweet_text)
+                        #api.update_profile_image(profile_image)
+                        #api.update_profile_banner(profile_image)
                         update = True
                     except tweepy.error.TweepError:
                         update = False
@@ -74,13 +74,15 @@ def main():
                         c.execute('SELECT 1 FROM nowplaying WHERE track=? LIMIT 1', (name,))
                         name_exists = c.fetchone() is not None
                         if name_exists is False:
-                            c.execute("INSERT OR IGNORE INTO nowplaying (track, artist, album, totalPlays) VALUES ('{a1}', '{a2}', '{a3}', 1)".\
+                            c.execute("INSERT OR IGNORE INTO nowplaying (track, artist, album, totalPlays, firstListen) VALUES ('{a1}', '{a2}', '{a3}', 1, datetime('now'))".\
                                       format(a1=track_name, a2=artist_name, a3=album_name))
-                            print "Added to database"
+                            #print "Added to database"
                         else:
                             c.execute("UPDATE nowplaying SET totalPlays = totalPlays + 1 WHERE track = '{a1}'".\
                                       format(a1=track_name))
-                            print "Updated play count"
+                            c.execute("UPDATE nowplaying SET lastListen = datetime('now') WHERE track = '{a1}'".\
+                                      format(a1=track_name))
+                            #print "Updated play count"
                         conn.commit()
                         conn.close()
                     else:
