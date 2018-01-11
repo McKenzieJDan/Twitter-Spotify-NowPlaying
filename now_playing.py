@@ -4,15 +4,15 @@ import sys
 import os
 import time
 import datetime
-import tweepy
 import urllib
+import requests
+import json
+import sqlite3
+import tweepy
 import spotipy
 import spotipy.util as util
 from PIL import Image
 from keys import *
-import requests
-import json
-import sqlite3
 
 # Twitter https://apps.twitter.com/
 consumer_key = twitter_consumer_key
@@ -41,7 +41,6 @@ def main():
             results = sp.currently_playing()
             is_playing = results['is_playing']
             track_id = results['item']['id']
-
             if is_playing == True:
                 if track_id != last_id:
                     # Twitter Status
