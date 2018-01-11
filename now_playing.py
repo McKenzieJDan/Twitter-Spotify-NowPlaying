@@ -31,7 +31,7 @@ redirect_url = spotify_redirect_url
 username = spotify_username
 token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_url)
 
-poll_interval = 4
+poll_interval = 20
 
 def main():
     last_id = 0
@@ -57,9 +57,9 @@ def main():
                     track_uri = results['item']['uri']
                     track_uri_latest = [track_uri]
                     try:
-                        #api.update_status(tweet_text)
-                        #api.update_profile_image(profile_image)
-                        #api.update_profile_banner(profile_image)
+                        api.update_status(tweet_text)
+                        api.update_profile_image(profile_image)
+                        api.update_profile_banner(profile_image)
                         update = True
                     except tweepy.error.TweepError:
                         update = False
