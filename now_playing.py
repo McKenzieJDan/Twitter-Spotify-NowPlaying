@@ -68,34 +68,29 @@ def main():
                         pass
                     if update == True:
                         #sp.user_playlist_add_tracks(username, playlist_id, track_uri_latest, position=0)
-
-                        # Database work
                         sqlite_file = 'now_playing.db'
                         conn = sqlite3.connect(sqlite_file)
                         c = conn.cursor()
-
                         table_name = 'nowplaying'
+                        track_name = track_name
                         artist_name = artist_name
                         album_name = results['item']['album']['name']
-
                         column_one = 'track'
                         column_two = 'artist'
                         column_three = 'album'
                         column_four = 'totalPlays'
 
-                        for name in (track_name):
-                            c.execute("SELECT count(*) FROM nowplaying WHERE track = ?", (name,))
-                            data=c.fetchone()[0]
-                            if data==0:
-                                #print 'Doesnt exist insert into databse'
-                                print('There is no component named %s'%name)
-                                #c.execute("INSERT OR IGNORE INTO {tn} ({c1}, {c2}, {c3}, {c4}) VALUES ('{a1}', '{a2}', '{a3}', 1)".\
-                                #    format(tn=table_name, c1=column_one, c2=column_two, c3=column_three, c4=column_four, a1=track_name, a2=artist_name, a3=album_name))
-                            else:
-                                #print 'Does exist updating play count'
-                                print name
-                                print('Component %s found in %s row(s)'%(name,data))
-                                c.execute("UPDATE nowplaying SET totalPlays = totalPlays + 1 WHERE track = ?", (name,))
+                        name = str(track_name)
+                        c.execute('SELECT 1 FROM nowplaying WHERE track=? LIMIT 1', (name,))
+                        name_exists = c.fetchone() is not None
+
+                        if name_exists is False:
+                            c.execute("INSERT OR IGNORE INTO nowplaying (track, artist, album, totalPlays) VALUES ('{a1}', '{a2}', '{a3}', 1)".\
+                                      format(a1=track_name, a2=artist_name, a3=album_name))
+                        else:
+                            c.execute("UPDATE nowplaying SET totalPlays = totalPlays + 1 WHERE track = '{a1}'".\
+                                      format(a1=track_name))
+
                         conn.commit()
                         conn.close()
                     else:
