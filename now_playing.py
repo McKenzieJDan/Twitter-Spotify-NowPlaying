@@ -1,4 +1,4 @@
- #!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
 import os
@@ -31,99 +31,101 @@ redirect_url = spotify_redirect_url
 username = spotify_username
 token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_url)
 
+sp = spotipy.Spotify(auth=token)
+
 poll_interval = 20
 
-def main():
-    last_id = 0
-    while True:
-        if token:
-            sp = spotipy.Spotify(auth=token)
-            results = sp.currently_playing()
-            is_playing = results['is_playing']
-            track_id = results['item']['id']
-            if is_playing == True:
-                if track_id != last_id:
-                    # Twitter Status
-                    track_name = results['item']['name']
-                    artist_name = results['item']['artists'][0]['name']
-                    track_preview = results['item']['external_urls']['spotify']
-                    tweet_text = "#NowPlaying: " + track_name + " by " + artist_name + " " + track_preview
-                    # Twitter Profile Images
-                    cover_art = results['item']['album']['images'][0]['url']
-                    urllib.urlretrieve(cover_art, "profile_image.jpg")
-                    profile_image = 'profile_image.jpg'
-                    # Spotify Playlist
-                    playlist_id = spotify_playlist
-                    track_uri = results['item']['uri']
-                    track_uri_latest = [track_uri]
-                    try:
-                        api.update_status(tweet_text)
-                        api.update_profile_image(profile_image)
-                        api.update_profile_banner(profile_image)
-                        update = True
-                    except tweepy.error.TweepError:
-                        update = False
-                        pass
-                    if update == True:
-                        sp.user_playlist_add_tracks(username, playlist_id, track_uri_latest, position=0)
-                        try:
-                            sqlite_file = 'now_playing.db'
-                            conn = sqlite3.connect(sqlite_file)
-                            c = conn.cursor()
-                            album_name = results['item']['album']['name']
-                            name = str(track_name)
-                            c.execute('SELECT 1 FROM nowplaying WHERE track=? LIMIT 1', (name,))
-                            name_exists = c.fetchone() is not None
-                            if name_exists is False:
-                                c.execute("INSERT OR IGNORE INTO nowplaying (track, artist, album, totalPlays, firstListen) VALUES ('{a1}', '{a2}', '{a3}', 1, datetime('now'))".\
-                                          format(a1=track_name, a2=artist_name, a3=album_name))
-                                #print "Added to database"
-                            else:
-                                c.execute("UPDATE nowplaying SET totalPlays = totalPlays + 1 WHERE track = '{a1}'".\
-                                          format(a1=track_name))
-                                c.execute("UPDATE nowplaying SET lastListen = datetime('now') WHERE track = '{a1}'".\
-                                          format(a1=track_name))
-                                #print "Updated play count"
-                            conn.commit()
-                            conn.close()
-                        except sqlite3.Error as er:
-                            print 'er:', er.message
-                            pass
-                    else:
-                        try:
-                            sqlite_file = 'now_playing.db'
-                            conn = sqlite3.connect(sqlite_file)
-                            c = conn.cursor()
-                            album_name = results['item']['album']['name']
-                            name = str(track_name)
-                            c.execute('SELECT 1 FROM nowplaying WHERE track=? LIMIT 1', (name,))
-                            name_exists = c.fetchone() is not None
-                            if name_exists is False:
-                                c.execute("INSERT OR IGNORE INTO nowplaying (track, artist, album, totalPlays, firstListen) VALUES ('{a1}', '{a2}', '{a3}', 1, datetime('now'))".\
-                                          format(a1=track_name, a2=artist_name, a3=album_name))
-                                #print "Added to database"
-                            else:
-                                c.execute("UPDATE nowplaying SET totalPlays = totalPlays + 1 WHERE track = '{a1}'".\
-                                          format(a1=track_name))
-                                c.execute("UPDATE nowplaying SET lastListen = datetime('now') WHERE track = '{a1}'".\
-                                          format(a1=track_name))
-                                #print "Updated play count"
-                            conn.commit()
-                            conn.close()
-                        except sqlite3.Error as er:
-                            print 'er:', er.message
-                            pass
-                        pass
-                    last_id = track_id
-                    time.sleep(poll_interval)
-                else:
-                    time.sleep(poll_interval)
-            else:
-                last_id = 0
-                time.sleep(poll_interval)
+def getCurrentlyPlaying():
+    results = sp.currently_playing()
+
+    is_playing = results['is_playing']
+    currently_playing = results['item']
+
+    return is_playing, currently_playing
+
+
+def updateTwitter(track):
+    tweet_text = "#NowPlaying: " + track['name'] + " by " + track['artists'][0]['name'] + " " + track['external_urls']['spotify']
+
+    cover_art = track['album']['images'][0]['url']
+    urllib.urlretrieve(cover_art, "profile_image.jpg")
+    profile_image = 'profile_image.jpg'
+
+    try:
+        api.update_status(tweet_text)
+        api.update_profile_image(profile_image)
+        api.update_profile_banner(profile_image)
+        update = True
+    except tweepy.error.TweepError:
+        update = False
+
+    return update
+
+def updateSpotifyPlaylist(track):
+    playlist_id = spotify_playlist
+    sp.user_playlist_add_tracks(username, playlist_id, [track['uri']], position=0)
+    return
+
+def updateDatabase(track):
+    try:
+        sqlite_file = 'now_playing.db'
+        conn = sqlite3.connect(sqlite_file)
+        c = conn.cursor()
+
+        name = str(track['name'])
+        c.execute('SELECT 1 FROM nowplaying WHERE track=? LIMIT 1', (name,))
+        name_exists = c.fetchone() is not None
+
+        if not name_exists:
+            c.execute("INSERT OR IGNORE INTO nowplaying (track, artist, album, totalPlays, firstListen) VALUES ('{a1}', '{a2}', '{a3}', 1, datetime('now'))".\
+                      format(a1=track['name'], a2=track['artists'][0]['name'], a3=track['album']['name']))
         else:
-            print "Can't get token for", username
-            sys.exit()
+            c.execute("UPDATE nowplaying SET totalPlays = totalPlays + 1 WHERE track = '{a1}'".\
+                      format(a1=track['name']))
+            c.execute("UPDATE nowplaying SET lastListen = datetime('now') WHERE track = '{a1}'".\
+                      format(a1=track['name']))
+
+        conn.commit()
+        conn.close()
+
+    except sqlite3.Error as er:
+        print 'er:', er.message
+
+    return
+
+def update(last_id):
+
+    # Get currently playing from spotify
+    is_playing, track = getCurrentlyPlaying()
+
+    # No track playing so return with id=0
+    if not is_playing:
+        last_id = 0
+        return last_id
+
+    # Track is the same as before so return with same id
+    if track['id'] == last_id:
+        return last_id
+
+    # Update twitter
+    update = updateTwitter(track)
+
+    # If twitter update succeeded, add to spotify playlist
+    if update:
+        updateSpotifyPlaylist(track)
+
+    # Update the database
+    updateDatabase(track)
+
+    # Return the track id
+    return track['id']
 
 if __name__ == '__main__':
-    sys.exit(main())
+
+    if not token:
+        print "Can't get token for", username
+        sys.exit()
+    last_id = 0
+    while True:
+        last_id = update(last_id)
+time.sleep(poll_interval)
