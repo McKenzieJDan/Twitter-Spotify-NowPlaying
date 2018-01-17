@@ -46,7 +46,6 @@ def getCurrentlyPlaying():
 
 def updateTwitter(track):
     tweet_text = "#NowPlaying: " + track['name'] + " by " + track['artists'][0]['name'] + " " + track['external_urls']['spotify']
-
     cover_art = track['album']['images'][0]['url']
     urllib.urlretrieve(cover_art, "profile_image.jpg")
     profile_image = 'profile_image.jpg'
