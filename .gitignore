@@ -6,11 +6,11 @@
 .cache-djmshire
 keys.py
 keys.pyc
-keys
 .json
-data2.json
 .jpg
 profile_image.jpg
 now_playing.db
 .db
 now_playing_old.py
+data2.json
+token.txt
