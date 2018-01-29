@@ -32,19 +32,8 @@ username = spotify_username
 token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_url)
 
 sp = spotipy.Spotify(auth=token)
+
 poll_interval = 20
-
-def get_new_token():
-    token = util.prompt_for_user_token(username, scope, client_id=client_id,client_secret=client_secret,redirect_uri=redirect_url)
-    print("Token",token)
-    #file = open("token.txt","w")
-    file.write(token)
-    file.close()
-
-def do_token_refresh():
-    while(True):
-      get_new_token()
-      time.sleep(1000)
 
 def getCurrentlyPlaying():
     results = sp.currently_playing()
@@ -53,6 +42,7 @@ def getCurrentlyPlaying():
     currently_playing = results['item']
 
     return is_playing, currently_playing
+
 
 def updateTwitter(track):
     tweet_text = "#NowPlaying: " + track['name'] + " by " + track['artists'][0]['name'] + " " + track['external_urls']['spotify']
@@ -122,7 +112,6 @@ def update(last_id):
     # If twitter update succeeded, add to spotify playlist
     if update:
         updateSpotifyPlaylist(track)
-        #get_new_token()
 
     # Update the database
     updateDatabase(track)
@@ -131,11 +120,11 @@ def update(last_id):
     return track['id']
 
 if __name__ == '__main__':
+
     if not token:
         print "Can't get token for", username
         sys.exit()
     last_id = 0
     while True:
         last_id = update(last_id)
-        do_token_refresh()
 time.sleep(poll_interval)
